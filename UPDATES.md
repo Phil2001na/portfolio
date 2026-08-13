@@ -1,5 +1,13 @@
 # Updates
 
+## 2026-08-13 00:30
+- Visual redesign pass: animated gradient blobs + dot-grid texture in the background, gradient
+  hero name and glowing rotating aura behind the photo, shine-sweep on the primary button,
+  color-coded project tags (teal/amber/coral/violet), gradient-clip stat numbers with accent
+  bars, gradient section-label bars, and a scroll progress indicator.
+- Verified live in-browser (local server) before pushing: reveal animations, hover states, and
+  new elements all render correctly.
+
 ## 2026-08-13 00:00
 - Added direct GitHub source links to The Keeper and Security Payroll & Accounting cards now that
   those repos are public.

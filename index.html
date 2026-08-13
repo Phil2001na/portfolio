@@ -24,6 +24,8 @@
   --teal:       #14b8a6;
   --teal-deep:  #0f766e;
   --amber:      #f2a41d;
+  --coral:      #fb7185;
+  --violet:     #8b7ffb;
   --paper:      #eef2f7;
   --body:       #a7b2c5;
   --dim:        #5b6880;
@@ -43,10 +45,30 @@ body {
 body::before {
   content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(15,118,110,0.14) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 35% at 85% 20%, rgba(242,164,29,0.05) 0%, transparent 70%);
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(15,118,110,0.17) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 40% at 88% 15%, rgba(242,164,29,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 6% 75%, rgba(251,113,133,0.06) 0%, transparent 70%);
+  background-repeat: no-repeat;
+  animation: drift 26s ease-in-out infinite alternate;
 }
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(circle at 1px 1px, rgba(148,163,184,0.10) 1px, transparent 0);
+  background-size: 34px 34px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, #000 0%, transparent 78%);
+          mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, #000 0%, transparent 78%);
+}
+@keyframes drift {
+  0%   { background-position: 50% -10%, 88% 15%, 6% 75%; }
+  100% { background-position: 46% -6%, 84% 20%, 10% 70%; }
+}
+@media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
 main, nav, footer { position: relative; z-index: 1; }
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%; z-index: 300;
+  background: linear-gradient(90deg, var(--teal), var(--coral), var(--amber));
+  transition: width 0.12s linear;
+}
 
 h1,h2,h3 { color: var(--paper); }
 a { color: var(--teal); }
@@ -77,8 +99,13 @@ section { padding: 110px 6vw; max-width: 1200px; margin: 0 auto; }
 .s-label {
   font-family: var(--mono); font-size: 0.75rem; letter-spacing: 3px;
   text-transform: uppercase; color: var(--teal); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
 }
-.s-label::before { content: '— '; color: var(--dim); }
+.s-label::before {
+  content: ''; width: 28px; height: 2px; border-radius: 2px; flex-shrink: 0;
+  background: linear-gradient(90deg, var(--teal), var(--coral));
+}
+#contact .s-label::before { display: none; }
 .s-title {
   font-family: var(--serif); font-size: clamp(2rem, 4.5vw, 3rem);
   font-weight: 600; line-height: 1.12; color: var(--paper); margin-bottom: 48px;
@@ -92,7 +119,13 @@ section { padding: 110px 6vw; max-width: 1200px; margin: 0 auto; }
   font-size: 0.92rem; font-weight: 600; letter-spacing: 0.2px;
   transition: transform 0.16s, box-shadow 0.16s, background 0.16s, border-color 0.16s;
 }
-.btn-primary { background: var(--teal-deep); color: #fff; box-shadow: 0 8px 28px rgba(15,118,110,0.35); }
+.btn-primary { background: var(--teal-deep); color: #fff; box-shadow: 0 8px 28px rgba(15,118,110,0.35); position: relative; overflow: hidden; }
+.btn-primary::before {
+  content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+  transform: skewX(-20deg); transition: left 0.6s ease;
+}
+.btn-primary:hover::before { left: 130%; }
 .btn-primary:hover { background: var(--teal); transform: translateY(-2px); }
 .btn-ghost { border: 1px solid var(--line-2); color: var(--body); }
 .btn-ghost:hover { border-color: var(--teal); color: var(--paper); transform: translateY(-2px); }
@@ -108,12 +141,24 @@ section { padding: 110px 6vw; max-width: 1200px; margin: 0 auto; }
   display: flex; align-items: center; gap: 5rem;
   padding-top: 120px;
 }
+.hero-photo-glow { position: relative; flex-shrink: 0; width: 300px; height: 372px; }
+.hero-photo-glow::before {
+  content: ''; position: absolute; inset: -6px; border-radius: 25px; z-index: 0;
+  background: linear-gradient(120deg, var(--teal), var(--coral), var(--amber), var(--teal));
+  background-size: 300% 300%; filter: blur(16px); opacity: 0.55;
+  animation: glowmove 10s ease infinite;
+}
+@keyframes glowmove {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) { .hero-photo-glow::before { animation: none; } }
 .hero-photo {
-  flex-shrink: 0; width: 300px; height: 372px;
+  width: 100%; height: 100%;
   border-radius: 20px; overflow: hidden;
   border: 1px solid var(--line-2);
   box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 10px rgba(20,184,166,0.05);
-  position: relative;
+  position: relative; z-index: 1;
 }
 .hero-photo::after {
   content: ''; position: absolute; inset: 0;
@@ -137,7 +182,10 @@ section { padding: 110px 6vw; max-width: 1200px; margin: 0 auto; }
   font-size: clamp(3rem, 7.5vw, 5.2rem); line-height: 1.02;
   letter-spacing: -1.5px; margin-bottom: 18px;
 }
-.hero-name em { font-style: italic; color: var(--teal); }
+.hero-name em {
+  font-style: italic; background: linear-gradient(120deg, var(--teal), var(--coral));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
 .hero-title {
   font-family: var(--mono); font-size: 0.95rem; color: var(--amber);
   letter-spacing: 0.5px; margin-bottom: 22px;
@@ -157,7 +205,7 @@ section { padding: 110px 6vw; max-width: 1200px; margin: 0 auto; }
   background: linear-gradient(160deg, var(--ink-2) 0%, var(--ink-3) 100%);
   display: grid; grid-template-columns: 1.05fr 1fr;
   margin-bottom: 60px;
-  box-shadow: 0 24px 70px rgba(0,0,0,0.4);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.4), 0 0 90px -24px rgba(20,184,166,0.35);
 }
 .featured-viz { border-right: 1px solid var(--line); min-height: 340px; }
 .featured-viz svg { width: 100%; height: 100%; display: block; }
@@ -188,6 +236,9 @@ section { padding: 110px 6vw; max-width: 1200px; margin: 0 auto; }
   color: var(--teal); padding: 5px 12px; border-radius: 100px;
   backdrop-filter: blur(6px);
 }
+.card-tag.tag-amber  { color: var(--amber);  border-color: rgba(242,164,29,0.4); background: rgba(242,164,29,0.12); }
+.card-tag.tag-coral  { color: var(--coral);  border-color: rgba(251,113,133,0.4); background: rgba(251,113,133,0.12); }
+.card-tag.tag-violet { color: var(--violet); border-color: rgba(139,127,251,0.4); background: rgba(139,127,251,0.12); }
 .card-body { padding: 28px 30px 30px; display: flex; flex-direction: column; flex: 1; }
 .card-title { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; color: var(--paper); margin-bottom: 10px; }
 .card-desc { font-size: 0.92rem; margin-bottom: 16px; }
@@ -248,10 +299,20 @@ section { padding: 110px 6vw; max-width: 1200px; margin: 0 auto; }
 .about-copy strong { color: var(--paper); font-weight: 600; }
 .stat-col { display: flex; flex-direction: column; gap: 16px; }
 .stat {
-  border: 1px solid var(--line); border-radius: 14px; padding: 22px 26px;
-  background: var(--ink-2);
+  border: 1px solid var(--line); border-radius: 14px; padding: 22px 26px 22px 30px;
+  background: var(--ink-2); position: relative; overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
-.stat-n { font-family: var(--serif); font-size: 2.1rem; font-weight: 700; color: var(--teal); line-height: 1.1; }
+.stat::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
+  background: linear-gradient(180deg, var(--teal), var(--coral));
+}
+.stat:hover { transform: translateX(4px); border-color: var(--line-2); }
+.stat-n {
+  font-family: var(--serif); font-size: 2.1rem; font-weight: 700; line-height: 1.1;
+  background: linear-gradient(120deg, var(--teal), var(--amber));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
 .stat-l { font-size: 0.85rem; color: var(--dim); margin-top: 4px; }
 
 /* ── SKILLS ── */
@@ -262,13 +323,16 @@ section { padding: 110px 6vw; max-width: 1200px; margin: 0 auto; }
 .sk-pill {
   font-size: 0.84rem; color: var(--body); background: var(--ink-2);
   border: 1px solid var(--line); padding: 6px 15px; border-radius: 100px;
-  transition: border-color 0.15s, color 0.15s;
+  transition: border-color 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
-.sk-pill:hover { border-color: var(--teal); color: var(--paper); }
+.sk-pill:hover {
+  border-color: var(--teal); color: var(--paper); transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(20,184,166,0.18);
+}
 
 /* ── CONTACT ── */
 #contact { border-top: 1px solid var(--line); text-align: center; padding-bottom: 90px; }
-#contact .s-label::before { content: ''; }
+#contact .s-label { justify-content: center; }
 .contact-sub { max-width: 520px; margin: 0 auto 36px; }
 .contact-email {
   font-family: var(--serif); font-size: clamp(1.4rem, 3.4vw, 2.3rem);
@@ -287,7 +351,7 @@ footer {
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   #hero { flex-direction: column; align-items: flex-start; gap: 2.5rem; padding-top: 110px; min-height: auto; }
-  .hero-photo { width: 220px; height: 270px; }
+  .hero-photo-glow { width: 220px; height: 270px; }
   .featured { grid-template-columns: 1fr; }
   .featured-viz { border-right: none; border-bottom: 1px solid var(--line); min-height: 250px; }
   .grid-projects { grid-template-columns: 1fr; }
@@ -304,6 +368,8 @@ footer {
 </head>
 <body>
 
+<div class="scroll-progress" id="scroll-progress"></div>
+
 <nav>
   <a href="#hero" class="nav-brand">P<em>.</em>Kantewa</a>
   <ul class="nav-links">
@@ -319,8 +385,10 @@ footer {
 
 <!-- ── HERO ── -->
 <section id="hero">
-  <div class="hero-photo reveal">
-    <img src="assets/philip.jpg" alt="Philip Kantewa">
+  <div class="hero-photo-glow reveal">
+    <div class="hero-photo">
+      <img src="assets/philip.jpg" alt="Philip Kantewa">
+    </div>
   </div>
   <div class="hero-text reveal">
     <div class="hero-badge">Open to remote roles</div>
@@ -530,7 +598,7 @@ footer {
     <div class="card reveal">
       <div class="card-img">
         <img src="assets/payroll-dashboard.jpg" alt="Security payroll and accounting system dashboard" loading="lazy">
-        <span class="card-tag">ENTERPRISE SAAS</span>
+        <span class="card-tag tag-amber">ENTERPRISE SAAS</span>
       </div>
       <div class="card-body">
         <div class="card-title">Security Payroll &amp; Accounting</div>
@@ -556,7 +624,7 @@ footer {
     <div class="card reveal">
       <div class="card-img">
         <img src="assets/eggrun-order-pin.jpg" alt="EggRun delivery map with pin-drop ordering" loading="lazy">
-        <span class="card-tag">DELIVERY PLATFORM</span>
+        <span class="card-tag tag-coral">DELIVERY PLATFORM</span>
       </div>
       <div class="card-body">
         <div class="card-title">EggRun</div>
@@ -582,7 +650,7 @@ footer {
     <div class="card reveal">
       <div class="card-img">
         <img src="assets/bashu-home.jpg" alt="Bashu web app home screen" loading="lazy">
-        <span class="card-tag">MOBILE WEB</span>
+        <span class="card-tag tag-violet">MOBILE WEB</span>
       </div>
       <div class="card-body">
         <div class="card-title">Bashu Web</div>
@@ -653,7 +721,7 @@ footer {
             <div class="lab-node">QR + signed<br>webhook</div>
           </div>
         </div>
-        <span class="card-tag">BUSINESS API</span>
+        <span class="card-tag tag-amber">BUSINESS API</span>
       </div>
       <div class="card-body">
         <div class="card-title">WayaMe Gateway</div>
@@ -682,7 +750,7 @@ footer {
             <div class="lab-node">Frozen<br>evaluation</div>
           </div>
         </div>
-        <span class="card-tag">RESEARCH SYSTEM</span>
+        <span class="card-tag tag-violet">RESEARCH SYSTEM</span>
       </div>
       <div class="card-body">
         <div class="card-title">Memecoin Lab</div>
@@ -834,6 +902,15 @@ const io = new IntersectionObserver((entries) => {
   }
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+const progressBar = document.getElementById('scroll-progress');
+function updateScrollProgress() {
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+  progressBar.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateScrollProgress, { passive: true });
+updateScrollProgress();
 </script>
 
 </body>
