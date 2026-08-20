@@ -1,5 +1,9 @@
 # Updates
 
+## 2026-08-20 00:15
+- Removed the "Acumatica specialization · active" block from the Work section (T-series
+  progress claim) for now.
+
 ## 2026-08-20 00:00
 - Content accuracy pass ahead of sending the site to an Acumatica contact: reworded T-series claims
   from "T200 completed" to "working through the T Series" (T200/T210 done, more in progress).
