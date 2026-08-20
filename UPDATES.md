@@ -1,5 +1,16 @@
 # Updates
 
+## 2026-08-20 00:00
+- Content accuracy pass ahead of sending the site to an Acumatica contact: reworded T-series claims
+  from "T200 completed" to "working through the T Series" (T200/T210 done, more in progress).
+- Removed the "in under a week" build-time claim from the Bashu Web card (actual timeline was ~1.5
+  months).
+- Removed WayaMe Gateway and Memecoin Lab cards, and the now-empty "Engineering labs" subsection.
+- Removed The Keeper (AI agent) card and its "AI agents"/"my AI agent" mentions in the About section
+  (personal-use tool, not a production client system); dropped the live-systems stat 7 → 6.
+- Added a live demo link (security-payroll-demo.vercel.app) to the Security Payroll & Accounting
+  card, pointing at its bypass sign-in button for prospects to explore without credentials.
+
 ## 2026-08-13 00:30
 - Visual redesign pass: animated gradient blobs + dot-grid texture in the background, gradient
   hero name and glowing rotating aura behind the photo, shine-sweep on the primary button,
